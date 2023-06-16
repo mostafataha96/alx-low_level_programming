@@ -1,18 +1,17 @@
 #include <stdio.h>
-
 /**
  * main - Entry point
- *
- * Return: Always 0 (Success)
+ * Description: 'Print number of base 10 using putchar'
+ * Return: Always 0
  */
+
 int main(void)
 {
-	int n = 122;
+	int n;
 
-	while (n >= 97)
+	for (n = 48; n <= 57; n++)
 	{
 		putchar(n);
-		n--;
 	}
 	putchar('\n');
 	return (0);
