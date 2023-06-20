@@ -1,6 +1,8 @@
 #include "main.h"
 /**
- * isalpha - print 1 for letter and zero for rest
+ * _isalpha - check if character is lowercase or uppercase
+ *
+ * @c: takes input from function
  *
  * Return: 1 for letter, 0 for rest
  */

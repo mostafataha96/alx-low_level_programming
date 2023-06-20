@@ -1,12 +1,14 @@
 #include "main.h"
 /**
- * main - entry point
+ * _abs - absolute value
+ *
+ * @i: takes number from user
  *
  * Return: absolute value
  */
 int _abs(int i)
 {
-	if (i >=0)
+	if (i >= 0)
 	{
 		return (i);
 	}

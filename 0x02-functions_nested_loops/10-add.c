@@ -1,7 +1,10 @@
 #include "main.h"
 
 /**
- * main - entry point
+ * add - add two numbers
+ *
+ * @a: takes first integer
+ * @b: takes second integer
  *
  * Return: add two integers
  */

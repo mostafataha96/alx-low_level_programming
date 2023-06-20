@@ -1,9 +1,9 @@
 #include "main.h"
 
 /**
- * main - entry point
+ * times_table - prints the 9 times table
  *
- * Return: prints the 9 times table
+ * Return: Always 0 (Success)
  */
 
 void times_table(void)
@@ -28,7 +28,7 @@ void times_table(void)
 			{
 				_putchar((prod / 10) + 48);
 			}
-			_putchar((prod % 10) +48);
+			_putchar((prod % 10) + 48);
 		}
 		_putchar('\n');
 	}
