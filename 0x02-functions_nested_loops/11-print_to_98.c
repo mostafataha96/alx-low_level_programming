@@ -1,7 +1,9 @@
 #include "main.h"
 
 /**
- * main - entry point
+ * print_to_98 - print till 98
+ *
+ * @n: takes input from user
  *
  * Return: print to 98
  */
@@ -24,5 +26,5 @@ void print_to_98(int n)
 			printf("%d, ", count);
 		}
 	}
-	print("98\n");
+	printf("98\n");
 }
