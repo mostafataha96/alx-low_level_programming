@@ -1,9 +1,7 @@
 #include "main.h"
 /**
- * mian - entry point
- * Description: print the alpahbet 10 times
- * Return: Always 0 (Success)
- */
+ * print_alphabet_x10 - function will print the aphabet 10 times
+*/
 
 void print_alphabet_x10(void)
 {
