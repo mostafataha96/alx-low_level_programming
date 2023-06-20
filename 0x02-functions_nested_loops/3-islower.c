@@ -1,8 +1,12 @@
-#insert "main.h"
+#include "main.h"
+
 /**
- * main - entry point
+ * main - Entry point
  *
- * Return: 1 for lowercase, 0 for rest
+ * Description: 'the program's description'
+ * @parameter: describe the parameter
+ *
+ * Return: Always 0 (Success)
  */
 
 int _islower(int c)

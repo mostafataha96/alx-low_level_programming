@@ -1,6 +1,6 @@
 #include "main.h"
 /**
- * mian - entry point
+ * isalpha - print 1 for letter and zero for rest
  *
  * Return: 1 for letter, 0 for rest
  */
