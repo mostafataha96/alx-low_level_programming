@@ -2,7 +2,7 @@
 
 /**
  * swap_int - swaps the values of two integers
- * 		using the input parameters
+ * using the input parameters
  *
  * @a: input parameter 1
  * @b: input parameter 2
