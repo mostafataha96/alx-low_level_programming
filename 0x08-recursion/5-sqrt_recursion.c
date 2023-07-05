@@ -4,10 +4,10 @@
  * _sqrt_recursion - find natural square root
  * @n: int
  * @val: square root
- * return: int
+ * Return: int
  */
 int square(int n, int val);
-int _sqrt_recursion(innt n)
+int _sqrt_recursion(int n)
 {
 	return (square(n, 1));
 }

@@ -4,7 +4,7 @@
  * _pow_recursion - search a string for any set of bytes
  * @x: base
  * @y: exponent
- * return: pointer to the byte in 's' that matches one of the bytes in 'accept'
+ * Return: pointer to the byte in 's' that matches one of the bytes in 'accept'
  * or NULL if no such byte is found.
  */
 
