@@ -1,107 +1,103 @@
-#include "custom_io.h"
+#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-char *allocate_memory_for_buffer(char *filename);
-void close_custom_file(int descriptor);
+char *create_buffer(char *file);
+void close_file(int fd);
 
 /**
- * allocate_memory_for_buffer - Allocates memory for a buffer of size 1024 bytes.
- * @filename: The name of the file for which the buffer is allocated.
+ * create_buffer - Allocates 1024 bytes for a buffer.
+ * @file: The name of the file buffer is storing chars
  *
- * Return: A pointer to the newly-allocated buffer.
+ * Return: A pointer to the new buffer location
  */
-char *allocate_memory_for_buffer(char *filename)
+char *create_buffer(char *file)
 {
-    char *custom_buffer;
+	char *buffer;
 
-    custom_buffer = malloc(sizeof(char) * 1024);
+	buffer = malloc(sizeof(char) * 1024);
 
-    if (custom_buffer == NULL)
-    {
-        custom_dprintf(CUSTOM_STDERR_FILENO,
-                       "Error: Unable to allocate memory for %s\n", filename);
-        exit(EXIT_FAILURE);
-    }
+	if (buffer == NULL)
+	{
+		dprintf(STDERR_FILENO,
+			"Error: Can't write to %s\n", file);
+		exit(99);
+	}
 
-    return (custom_buffer);
+	return (buffer);
 }
 
 /**
- * close_custom_file - Closes custom file descriptors.
- * @descriptor: The custom file descriptor to be closed.
+ * close_file - Closes file descriptors.
+ * @fd: The file descriptor that will be closed.
  */
-void close_custom_file(int descriptor)
+void close_file(int fd)
 {
-    int close_status;
+	int c;
 
-    close_status = custom_close(descriptor);
+	c = close(fd);
 
-    if (close_status == -1)
-    {
-        custom_dprintf(CUSTOM_STDERR_FILENO,
-                       "Error: Unable to close descriptor %d\n", descriptor);
-        exit(EXIT_FAILURE);
-    }
+	if (c == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
+		exit(100);
+	}
 }
 
 /**
- * main - Copies the contents of one custom file to another.
- * @argc: The number of arguments provided to the program.
- * @argv: An array of pointers to the arguments.
+ * main - Copy contents of a file to another file.
+ * @argc: The number of arguments supplied to the program.
+ * @argv: array of pointers to the arguments.
  *
- * Return: 0 on successful execution.
+ * Return: 0 on success.
  *
- * Description: Exits with different codes for various error scenarios:
- * 97 - Incorrect argument count.
- * 98 - Inaccessible source file.
- * 99 - Unable to create or write to the destination file.
- * 100 - Failure in closing source or destination file.
+ * Description: If the argument count is incorrect - exit code 97.
+ * If file_from does not exist or cannot be read - exit code 98.
+ * If file_to cannot be created or written to - exit code 99.
+ * If file_to or file_from cannot be closed - exit code 100.
  */
 int main(int argc, char *argv[])
 {
-    int source_file, destination_file, read_status, write_status;
-    char *custom_buffer;
+	int from, to, r, w;
+	char *buffer;
 
-    if (argc != 3)
-    {
-        custom_dprintf(CUSTOM_STDERR_FILENO, "Usage: custom_cp source_file destination_file\n");
-        exit(97);
-    }
+	if (argc != 3)
+	{
+		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+		exit(97);
+	}
 
-    custom_buffer = allocate_memory_for_buffer(argv[2]);
-    source_file = custom_open(argv[1], CUSTOM_O_RDONLY);
-    read_status = custom_read(source_file, custom_buffer, 1024);
-    destination_file = custom_open(argv[2], CUSTOM_O_CREAT | CUSTOM_O_WRONLY | CUSTOM_O_TRUNC, 0664);
+	buffer = create_buffer(argv[2]);
+	from = open(argv[1], O_RDONLY);
+	r = read(from, buffer, 1024);
+	to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 
-    do
-    {
-        if (source_file == -1 || read_status == -1)
-        {
-            custom_dprintf(CUSTOM_STDERR_FILENO,
-                           "Error: Unable to read from source file %s\n", argv[1]);
-            free(custom_buffer);
-            exit(98);
-        }
+	do {
+		if (from == -1 || r == -1)
+		{
+			dprintf(STDERR_FILENO,
+				"Error: Can't read from file %s\n", argv[1]);
+			free(buffer);
+			exit(98);
+		}
 
-        write_status = custom_write(destination_file, custom_buffer, read_status);
-        if (destination_file == -1 || write_status == -1)
-        {
-            custom_dprintf(CUSTOM_STDERR_FILENO,
-                           "Error: Unable to write to destination file %s\n", argv[2]);
-            free(custom_buffer);
-            exit(99);
-        }
+		w = write(to, buffer, r);
+		if (to == -1 || w == -1)
+		{
+			dprintf(STDERR_FILENO,
+				"Error: Can't write to %s\n", argv[2]);
+			free(buffer);
+			exit(99);
+		}
 
-        read_status = custom_read(source_file, custom_buffer, 1024);
-        destination_file = custom_open(argv[2], CUSTOM_O_WRONLY | CUSTOM_O_APPEND);
+		r = read(from, buffer, 1024);
+		to = open(argv[2], O_WRONLY | O_APPEND);
 
-    } while (read_status > 0);
+	} while (r > 0);
 
-    free(custom_buffer);
-    close_custom_file(source_file);
-    close_custom_file(destination_file);
+	free(buffer);
+	close_file(from);
+	close_file(to);
 
-    return (EXIT_SUCCESS);
+	return (0);
 }
-
